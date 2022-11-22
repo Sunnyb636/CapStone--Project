@@ -42,51 +42,88 @@ all the steps followed are same of the above jobs
 Now as the code is deployed in production and is working fine , we need to create a pipeline such that job-3 will trigger only if job-2 is built successfully
 for this requirement job-3 is configured again and markerd build trigger such that job-3 will only be triggered after the successfull built of job-2
 Thus because of this pipeline - code will only get pushed to the production after the successfull testing of code on test servers 
+                                                 
                                                  *** Project is Completed ***
  
  #$ content used $ 🔽
- #playbook -
+
+#playbook -
  ---
  - hosts: localhost
+  
    name: master tasks
+  
    become: yes
+   
    tasks:
+   
     - name: executing master
+     
       script: master.sh
- - hosts: slave
-   name: slave tasks
-   become: yes
-   tasks:
+
+- hosts: slave
+
+  name: slave tasks
+  
+  become: yes
+  
+  tasks:
+    
     - name: executing slaves
+     
       script: slave.sh
  
 #shell scripts 
+
 master.sh:- 
+
 sudo apt install docker.io -y
+
 sudo apt install openjdk-11-jdk -y
+
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
+
 sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ >  /etc/apt/sources.list.d/jenkins.list'
+
 sudo apt-get update
+
 sudo apt-get install jenkins -y
 
+
 slave.sh :- 
+
 sudo apt install docker.io -y
+
 sudo apt install openjdk-11-jdk -y
- 
+
+
 #dockerfile :- 
+
 FROM ubuntu
+
 RUN apt-get update
+
 RUN apt install apache2 -y
+
 ADD . /var/www/html
+
 ENTRYPOINT apachectl -D FOREGROUND
  
+
 #index.html file :- 
  
 <html>
+
 <head>
+
 <title> Capstone-Project </title>
+
 </head>
+
 <body style = "background-image:url('devop.jfif'); background-size: 100%">
+
 <h2 ALIGN=LEFT>Welcome to the world of magic!</h2>
+
 </body>
+
 </html>
